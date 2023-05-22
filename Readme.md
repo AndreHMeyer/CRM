@@ -9,7 +9,7 @@ and the local database
 
 - download the `setup` sql script on your local machine
 
-after download and run, configure the `appsettings.json` and put another user (case necessary) on `Uid` ou add the `Pwd` for your password
+after download and run, configure the `appsettings.json` and put another user (case necessary) on `Uid` or add the `Pwd` for your password
 
 
 ## Run Project
