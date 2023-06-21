@@ -1,5 +1,6 @@
 ﻿using Application.Handlers;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -8,6 +9,7 @@ namespace Crm.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MailTemplateController : ControllerBase
     {
         private GetMailTemplateHandler getMailTemplateHandler;
