@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xFrhg378qEpI/y8Qg49pYHWfKlMTajcb9EbkoPLyBX3STQcHy4JyGkmliPW6ExzYF1WWxBWqjCbL9i9zvPe0eQ==",
+  "dgSpecHash": "+fpIn5mgfdHBLGki0UrPQKJb2z4s7nNs8hKep6SxE5gZYQ5vv0XHz2Ec62tK6zbS3si401jgbzqVsUQmqHBHjQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\AndréMeyer\\OneDrive - SMART CONSULTING\\Área de Trabalho\\Crm\\Crm\\Crm\\Crm.csproj",
+  "projectFilePath": "C:\\Users\\AndréMeyer\\OneDrive - SMART CONSULTING\\Área de Trabalho\\Crm - Back\\Crm\\Crm\\Crm.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\AndréMeyer\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\AndréMeyer\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",

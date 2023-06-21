@@ -55,16 +55,14 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO user (name, email, phone, password, photo, status) ");
+                query.Append(" INSERT INTO user (name, phone, photo, status) ");
                 query.Append(" VALUES (@name, @email, @phone, @password, @photo, @status); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
                 parameters.Add("name", user.Name);
-                parameters.Add("email", user.Email);
                 parameters.Add("phone", user.Phone);
-                parameters.Add("password", user.Password);
                 parameters.Add("photo", user.Photo);
                 parameters.Add("status", user.Status, DbType.Boolean);
 
@@ -94,9 +92,7 @@ namespace Infra.Repositories
 
                 parameters.Add("id", user.Id, DbType.Int64);
                 parameters.Add("name", user.Name);
-                parameters.Add("email", user.Email);
                 parameters.Add("phone", user.Phone);
-                parameters.Add("password", user.Password);
                 parameters.Add("photo", user.Photo);
                 parameters.Add("status", user.Status, DbType.Boolean);
 

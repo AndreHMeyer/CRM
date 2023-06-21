@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "c1ov+cs1T/8KPya89yNSX1g3mYLESkCjHln/kbGZ0bxf9mnmn2KQfgdX717wU7GVLUS6elJAvKfiyYfa4ugEMQ==",
+  "dgSpecHash": "/PMqU98M9T8vy6WmRntb3hwbhdpuv3mVZ5YFFiolAnTfy1sk01hSfO42G+9J9PJwu7YHsBOQGqbNtP8JmiLBKQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\AndréMeyer\\OneDrive - SMART CONSULTING\\Área de Trabalho\\Crm\\Crm\\Domain\\Domain.csproj",
+  "projectFilePath": "C:\\Users\\AndréMeyer\\OneDrive - SMART CONSULTING\\Área de Trabalho\\Crm - Back\\Crm\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\AndréMeyer\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
