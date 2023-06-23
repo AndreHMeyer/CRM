@@ -30,7 +30,6 @@ namespace Infra.Repositories
                 query.Append(" SELECT id as Id, ");
                 query.Append(" name as Name, ");
                 query.Append(" phone as Phone, ");
-                query.Append(" password as Password, ");
                 query.Append(" photo as Photo, ");
                 query.Append(" status as Status ");
                 query.Append(" FROM user; ");
@@ -56,7 +55,7 @@ namespace Infra.Repositories
             {
                 StringBuilder query = new();
                 query.Append(" INSERT INTO user (name, phone, photo, status) ");
-                query.Append(" VALUES (@name, @email, @phone, @password, @photo, @status); ");
+                query.Append(" VALUES (@name, @phone, @photo, @status); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
@@ -85,7 +84,7 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE user SET name = @name, email = @email, phone = @phone, password = @password, photo = @photo, status = @status ");
+                query.Append("  UPDATE user SET name = @name, phone = @phone, photo = @photo, status = @status ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
