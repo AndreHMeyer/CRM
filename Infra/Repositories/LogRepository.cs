@@ -31,8 +31,8 @@ namespace Infra.Repositories
                 query.Append(" l.tableLog as TableLog, ");
                 query.Append(" l.type as Type, ");
                 query.Append(" l.data as Data, ");
-                query.Append(" l.idUser as IdUser, ");
-                query.Append(" FROM log l, ");
+                query.Append(" l.idUser as IdUser ");
+                query.Append(" FROM log l ");
                 query.Append(" JOIN user u on u.id = l.idUser; ");
 
                 var obj = await connection.QueryAsync<Log>(query.ToString());

@@ -33,7 +33,7 @@ namespace Infra.Repositories
                 query.Append("m.body as Body, ");
                 query.Append("m.idMailTemplate as IdMailTemplate ");
                 query.Append("FROM mail m ");
-                query.Append("JOIN mailTemplate mt ON mt.id = m.idMailTemplate");
+                query.Append("JOIN mailTemplate mt ON mt.id = m.idMailTemplate;");
 
                 var obj = await connection.QueryAsync<Mail>(query.ToString());
 

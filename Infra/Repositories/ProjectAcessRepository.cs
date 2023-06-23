@@ -30,8 +30,8 @@ namespace Infra.Repositories
                 query.Append(" SELECT pa.id as Id, ");
                 query.Append(" pa.userType as userType, ");
                 query.Append(" pa.idProject as IdProject, ");
-                query.Append(" pa.idUser as IdUser, ");
-                query.Append(" FROM projectAcess pa, ");
+                query.Append(" pa.idUser as IdUser ");
+                query.Append(" FROM projectAcess pa ");
                 query.Append(" JOIN project p u ON p.id = pa.idProject AND user u ON u.id = pa.idUser; ");
 
                 var obj = await connection.QueryAsync<ProjectAcess>(query.ToString());

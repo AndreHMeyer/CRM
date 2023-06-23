@@ -31,8 +31,8 @@ namespace Infra.Repositories
                 query.Append(" pd.revenue as Revenue, ");
                 query.Append(" pd.numberOfClients as NumberOfClients, ");
                 query.Append(" pd.projectName as ProjectName, ");
-                query.Append(" pd.idProject as IdProject, ");
-                query.Append(" FROM projectData pd, ");
+                query.Append(" pd.idProject as IdProject ");
+                query.Append(" FROM projectData pd ");
                 query.Append(" JOIN project p ON p.id = pa.idProject; ");
 
                 var obj = await connection.QueryAsync<ProjectData>(query.ToString());

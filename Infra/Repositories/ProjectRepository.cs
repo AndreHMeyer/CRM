@@ -33,8 +33,8 @@ namespace Infra.Repositories
                 query.Append(" p.photo as Photo, ");
                 query.Append(" p.createdAt as CreatedAt, ");
                 query.Append(" p.status as Status, ");
-                query.Append(" p.idUserOwner as IdUserOwner, ");
-                query.Append(" FROM project p, ");
+                query.Append(" p.idUserOwner as IdUserOwner ");
+                query.Append(" FROM project p ");
                 query.Append(" JOIN user u ON u.id = p.idUserOwner; ");
 
                 var obj = await connection.QueryAsync<Project>(query.ToString());
