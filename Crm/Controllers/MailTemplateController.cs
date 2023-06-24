@@ -27,6 +27,7 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
+        //[AllowAnonymous] --> Libera do authorized (Sem autenticação)
         public ActionResult<List<MailTemplate>> GetMailTemplate()
         {
             try
