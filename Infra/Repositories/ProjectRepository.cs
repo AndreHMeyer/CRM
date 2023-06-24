@@ -31,6 +31,7 @@ namespace Infra.Repositories
                 query.Append(" p.name as Name, ");
                 query.Append(" p.description as Description, ");
                 query.Append(" p.photo as Photo, ");
+                query.Append(" p.createdAt as CreatedAt, ");
                 query.Append(" p.status as Status, ");
                 query.Append(" p.idUserOwner as IdUserOwner ");
                 query.Append(" FROM project p ");
@@ -55,8 +56,8 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO project (name, description, photo, status) ");
-                query.Append(" VALUES (@name, @description, @photo, @status); ");
+                query.Append(" INSERT INTO project (name, description, photo, createdAt, status) ");
+                query.Append(" VALUES (@name, @description, @photo, @createdAt, @status); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
@@ -64,6 +65,7 @@ namespace Infra.Repositories
                 parameters.Add("name", project.Name);
                 parameters.Add("description", project.Description);
                 parameters.Add("photo", project.Photo);
+                parameters.Add("createdAt", project.CreatedAt, DbType.Int64);
                 parameters.Add("status", project.Status, DbType.Boolean);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
@@ -85,7 +87,7 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE project SET name = @name, description = @description, photo = @photo, status = @status ");
+                query.Append("  UPDATE project SET name = @name, description = @description, photo = @photo, createdAt = @createdAt, status = @status ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
@@ -94,6 +96,7 @@ namespace Infra.Repositories
                 parameters.Add("name", project.Name);
                 parameters.Add("description", project.Description);
                 parameters.Add("photo", project.Photo);
+                parameters.Add("createdAt", project.CreatedAt, DbType.Int64);
                 parameters.Add("status", project.Status, DbType.Boolean);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);

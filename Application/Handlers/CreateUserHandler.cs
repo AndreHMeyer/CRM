@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Model;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Handlers
+namespace Application.NewFolder
 {
     public class CreateUserHandler
     {
@@ -18,11 +19,17 @@ namespace Application.Handlers
         {
             userRepository = new UserRepository(mySqlConnection);
         }
-        public long Handle(User user)
+        public ResultModel<long> Handle(User user)
         {
             try
             {
-                return userRepository.CreateUser(user).Result;
+                ResultModel<long> ResultUser = new();
+
+                ResultUser.Model = userRepository.CreateUser(user).Result;
+
+                ResultUser.Success = true;
+
+                return ResultUser;
             }
             catch (Exception ex)
             {

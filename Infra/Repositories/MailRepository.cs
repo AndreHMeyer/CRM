@@ -13,57 +13,50 @@ using System.Threading.Tasks;
 
 namespace Infra.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class MailRepository : IMailRepository
     {
         private MySqlConnection connection;
 
-        public UserRepository(MySqlConnection con)
+        public MailRepository(MySqlConnection con)
         {
             connection = con;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<Mail>> GetMails()
         {
             try
             {
-                StringBuilder query = new();
-                query.Append(" SELECT id as Id, ");
-                query.Append(" name as Name, ");
-                query.Append(" phone as Phone, ");
-                query.Append(" photo as Photo, ");
-                query.Append(" status as Status ");
-                query.Append(" FROM user; ");
+                await connection.OpenAsync();
 
-                var obj = await connection.QueryAsync<User>(query.ToString());
+                StringBuilder query = new StringBuilder();
+                query.Append("SELECT m.id as Id, ");
+                query.Append("m.body as Body, ");
+                query.Append("m.idMailTemplate as IdMailTemplate ");
+                query.Append("FROM mail m ");
+                query.Append("JOIN mailTemplate mt ON mt.id = m.idMailTemplate;");
+
+                var obj = await connection.QueryAsync<Mail>(query.ToString());
 
                 return obj.ToList();
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro no banco: " + ex);
+                throw new Exception("Erro no banco: " + ex.Message);
             }
-            finally
-            {
-                await connection.CloseAsync();
-            }
-
         }
 
-        public async Task<long> CreateUser(User user)
+        public async Task<long> CreateMail(Mail mail)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO user (name, phone, photo, status) ");
-                query.Append(" VALUES (@name, @phone, @photo, @status); ");
+                query.Append(" INSERT INTO mail (body) ");
+                query.Append(" VALUES (@body); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("name", user.Name);
-                parameters.Add("phone", user.Phone);
-                parameters.Add("photo", user.Photo);
-                parameters.Add("status", user.Status, DbType.Boolean);
+                parameters.Add("body", mail.Body);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
 
@@ -79,25 +72,22 @@ namespace Infra.Repositories
             }
         }
 
-        public async Task<User> UpdateUser(User user)
+        public async Task<Mail> UpdateMail(Mail mail)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE user SET name = @name, phone = @phone, photo = @photo, status = @status ");
+                query.Append("  UPDATE mail SET body = @body ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", user.Id, DbType.Int64);
-                parameters.Add("name", user.Name);
-                parameters.Add("phone", user.Phone);
-                parameters.Add("photo", user.Photo);
-                parameters.Add("status", user.Status, DbType.Boolean);
+                parameters.Add("id", mail.Id, DbType.Int64);
+                parameters.Add("body", mail.Body);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return user;
+                return mail;
             }
             catch (Exception ex)
             {
@@ -107,24 +97,22 @@ namespace Infra.Repositories
             {
                 await connection.CloseAsync();
             }
-
         }
 
-        public async Task<User> DeleteUser(User user)
+        public async Task<Mail> DeleteMail(Mail mail)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" DELETE FROM user WHERE id = @id; ");
+                query.Append("  DELETE FROM mail WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", user.Id, DbType.Int64);
-
+                parameters.Add("id", mail.Id, DbType.Int64);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return user;
+                return mail;
             }
             catch (Exception ex)
             {
@@ -134,7 +122,7 @@ namespace Infra.Repositories
             {
                 await connection.CloseAsync();
             }
-
         }
+
     }
 }

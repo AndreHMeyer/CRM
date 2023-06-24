@@ -13,28 +13,29 @@ using System.Threading.Tasks;
 
 namespace Infra.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class LogRepository : ILogRepository
     {
         private MySqlConnection connection;
 
-        public UserRepository(MySqlConnection con)
+        public LogRepository(MySqlConnection con)
         {
             connection = con;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<Log>> GetLogs()
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" SELECT id as Id, ");
-                query.Append(" name as Name, ");
-                query.Append(" phone as Phone, ");
-                query.Append(" photo as Photo, ");
-                query.Append(" status as Status ");
-                query.Append(" FROM user; ");
+                query.Append(" SELECT l.id as Id, ");
+                query.Append(" l.tableLog as TableLog, ");
+                query.Append(" l.type as Type, ");
+                query.Append(" l.data as Data, ");
+                query.Append(" l.idUser as IdUser ");
+                query.Append(" FROM log l ");
+                query.Append(" JOIN user u on u.id = l.idUser; ");
 
-                var obj = await connection.QueryAsync<User>(query.ToString());
+                var obj = await connection.QueryAsync<Log>(query.ToString());
 
                 return obj.ToList();
             }
@@ -49,21 +50,20 @@ namespace Infra.Repositories
 
         }
 
-        public async Task<long> CreateUser(User user)
+        public async Task<long> CreateLog(Log log)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO user (name, phone, photo, status) ");
-                query.Append(" VALUES (@name, @phone, @photo, @status); ");
+                query.Append(" INSERT INTO log (tableLog, type, data) ");
+                query.Append(" VALUES (@tableLog, @type, @data); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("name", user.Name);
-                parameters.Add("phone", user.Phone);
-                parameters.Add("photo", user.Photo);
-                parameters.Add("status", user.Status, DbType.Boolean);
+                parameters.Add("tableLog", log.TableLog);
+                parameters.Add("type", log.Type);
+                parameters.Add("data", log.Data);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
 
@@ -79,25 +79,24 @@ namespace Infra.Repositories
             }
         }
 
-        public async Task<User> UpdateUser(User user)
+        public async Task<Log> UpdateLog(Log log)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE user SET name = @name, phone = @phone, photo = @photo, status = @status ");
+                query.Append("  UPDATE log SET tableLog = @tableLog, type = @type, data = @data ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", user.Id, DbType.Int64);
-                parameters.Add("name", user.Name);
-                parameters.Add("phone", user.Phone);
-                parameters.Add("photo", user.Photo);
-                parameters.Add("status", user.Status, DbType.Boolean);
+                parameters.Add("id", log.Id, DbType.Int64);
+                parameters.Add("tableLog", log.TableLog);
+                parameters.Add("type", log.Type);
+                parameters.Add("data", log.Data);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return user;
+                return log;
             }
             catch (Exception ex)
             {
@@ -110,21 +109,21 @@ namespace Infra.Repositories
 
         }
 
-        public async Task<User> DeleteUser(User user)
+        public async Task<Log> DeleteLog(Log log)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" DELETE FROM user WHERE id = @id; ");
+                query.Append(" DELETE FROM log WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", user.Id, DbType.Int64);
+                parameters.Add("id", log.Id, DbType.Int64);
 
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return user;
+                return log;
             }
             catch (Exception ex)
             {

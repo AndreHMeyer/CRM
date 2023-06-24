@@ -8,43 +8,43 @@ namespace Crm.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class LogController : ControllerBase
     {
-        private GetUserHandler getUserHandler;
-        private CreateUserHandler createUserHandler;
-        private UpdateUserHandler updateUserHandler;
-        private DeleteUserHandler deleteUserHandler;
+        private GetLogHandler getLogHandler;
+        private CreateLogHandler createLogHandler;
+        private UpdateLogHandler updateLogHandler;
+        private DeleteLogHandler deleteLogHandler;
 
-        public UserController(IConfiguration config)
+        public LogController(IConfiguration config)
         {
             MySqlConnection connection = new(config.GetConnectionString("crm"));
-            getUserHandler = new GetUserHandler(connection);
-            createUserHandler = new CreateUserHandler(connection);
-            updateUserHandler = new UpdateUserHandler(connection);
-            deleteUserHandler = new DeleteUserHandler(connection);
+            getLogHandler = new GetLogHandler(connection);
+            createLogHandler = new CreateLogHandler(connection);
+            updateLogHandler = new UpdateLogHandler(connection);
+            deleteLogHandler = new DeleteLogHandler(connection);
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetUser()
+        public ActionResult<List<Log>> GetLogs()
         {
             try
             {
-                var t = getUserHandler.Handle();
+                var t = getLogHandler.Handle();
 
                 return Ok(t);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
         }
 
         [HttpPost]
-        public ActionResult<long> CreateUser([FromBody] User user)
+        public ActionResult<long> CreateLog([FromBody] Log log)
         {
             try
             {
-                var t = createUserHandler.Handle(user);
+                var t = createLogHandler.Handle(log);
 
                 return Ok(t);
             }
@@ -55,11 +55,11 @@ namespace Crm.Controllers
         }
 
         [HttpPut]
-        public ActionResult<long> UpdateUser([FromBody] User user)
+        public ActionResult<long> UpdateLog([FromBody] Log log)
         {
             try
             {
-                var t = updateUserHandler.Handle(user);
+                var t = updateLogHandler.Handle(log);
 
                 return Ok(t);
             }
@@ -70,11 +70,11 @@ namespace Crm.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<long> DeleteUser([FromBody] User user)
+        public ActionResult<long> DeleteLog([FromBody] Log log)
         {
             try
             {
-                var t = deleteUserHandler.Handle(user);
+                var t = deleteLogHandler.Handle(log);
 
                 return Ok(t);
             }

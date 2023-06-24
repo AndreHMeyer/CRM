@@ -13,57 +13,56 @@ using System.Threading.Tasks;
 
 namespace Infra.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class ProjectDataRepository : IProjectDataRepository
     {
         private MySqlConnection connection;
 
-        public UserRepository(MySqlConnection con)
+        public ProjectDataRepository(MySqlConnection con)
         {
             connection = con;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<ProjectData>> GetProjectsData()
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" SELECT id as Id, ");
-                query.Append(" name as Name, ");
-                query.Append(" phone as Phone, ");
-                query.Append(" photo as Photo, ");
-                query.Append(" status as Status ");
-                query.Append(" FROM user; ");
+                query.Append(" SELECT pd.id as Id, ");
+                query.Append(" pd.revenue as Revenue, ");
+                query.Append(" pd.numberOfClients as NumberOfClients, ");
+                query.Append(" pd.projectName as ProjectName, ");
+                query.Append(" pd.idProject as IdProject ");
+                query.Append(" FROM projectData pd ");
+                query.Append(" JOIN project p ON p.id = pa.idProject; ");
 
-                var obj = await connection.QueryAsync<User>(query.ToString());
+                var obj = await connection.QueryAsync<ProjectData>(query.ToString());
 
                 return obj.ToList();
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro no banco: " + ex);
+                throw new Exception("Erro no banco: " + ex.Message);
             }
             finally
             {
                 await connection.CloseAsync();
             }
-
         }
 
-        public async Task<long> CreateUser(User user)
+        public async Task<long> CreateProjectData(ProjectData projectData)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO user (name, phone, photo, status) ");
-                query.Append(" VALUES (@name, @phone, @photo, @status); ");
+                query.Append(" INSERT INTO projectData (revenue, numberOfClients, projectName) ");
+                query.Append(" VALUES (@revenue @numberOfClients, @projectName); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("name", user.Name);
-                parameters.Add("phone", user.Phone);
-                parameters.Add("photo", user.Photo);
-                parameters.Add("status", user.Status, DbType.Boolean);
+                parameters.Add("revenue", projectData.Revenue, DbType.Double);
+                parameters.Add("numberOfClients", projectData.NumberOfClients, DbType.Int64);
+                parameters.Add("projectName", projectData.ProjectName);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
 
@@ -79,25 +78,24 @@ namespace Infra.Repositories
             }
         }
 
-        public async Task<User> UpdateUser(User user)
+        public async Task<ProjectData> UpdateProjectData(ProjectData projectData)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE user SET name = @name, phone = @phone, photo = @photo, status = @status ");
+                query.Append("  UPDATE projectData SET revenue = @revenue, numberOfClients = @numberOfClients, projectName = @projectName ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", user.Id, DbType.Int64);
-                parameters.Add("name", user.Name);
-                parameters.Add("phone", user.Phone);
-                parameters.Add("photo", user.Photo);
-                parameters.Add("status", user.Status, DbType.Boolean);
+                parameters.Add("id", projectData.Id, DbType.Int64);
+                parameters.Add("revenue", projectData.Revenue, DbType.Double);
+                parameters.Add("numberOfClients", projectData.NumberOfClients, DbType.Int64);
+                parameters.Add("projectName", projectData.ProjectName);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return user;
+                return projectData;
             }
             catch (Exception ex)
             {
@@ -107,24 +105,22 @@ namespace Infra.Repositories
             {
                 await connection.CloseAsync();
             }
-
         }
 
-        public async Task<User> DeleteUser(User user)
+        public async Task<ProjectData> DeleteProjectData(ProjectData projectData)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" DELETE FROM user WHERE id = @id; ");
+                query.Append("  DELETE FROM projectData WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", user.Id, DbType.Int64);
-
+                parameters.Add("id", projectData.Id, DbType.Int64);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return user;
+                return projectData;
             }
             catch (Exception ex)
             {
@@ -134,7 +130,7 @@ namespace Infra.Repositories
             {
                 await connection.CloseAsync();
             }
-
         }
+
     }
 }

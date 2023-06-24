@@ -10,19 +10,20 @@ using System.Threading.Tasks;
 
 namespace Application.NewFolder
 {
-    public class UpdateProjectHandler
+    public class DeleteProjectHandler
     {
         private IProjectRepository projectRepository;
 
-        public UpdateProjectHandler(MySqlConnection mySqlConnection)
+        public DeleteProjectHandler(MySqlConnection mySqlConnection)
         {
             projectRepository = new ProjectRepository(mySqlConnection);
         }
+
         public Project Handle(Project project)
         {
             try
             {
-                return projectRepository.UpdateProject(project).Result;
+                return projectRepository.DeleteProject(project).Result;
             }
             catch (Exception ex)
             {
