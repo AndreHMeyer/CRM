@@ -8,22 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ProjectHandlers
 {
-    public class CreateLogHandler
+    public class GetProjectHandler
     {
-        private ILogRepository logRepository;
+        private IProjectRepository projectRepository;
 
-        public CreateLogHandler(MySqlConnection mySqlConnection)
+        public GetProjectHandler(MySqlConnection mySqlConnection)
         {
-            logRepository = new LogRepository(mySqlConnection);
+            projectRepository = new ProjectRepository(mySqlConnection);
         }
 
-        public long Handle(Log log)
+        public List<Project> Handle()
         {
             try
             {
-                return logRepository.CreateLog(log).Result;
+                return projectRepository.GetProjects().Result;
             }
             catch (Exception ex)
             {

@@ -8,27 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ProjectAcessHandlers
 {
-    public class GetUserHandler
+    public class GetProjectAcessHandler
     {
-        private IUserRepository userRepository;
+        private IProjectAcessRepository projectAcessRepository;
 
-        public GetUserHandler(MySqlConnection mySqlConnection)
+        public GetProjectAcessHandler(MySqlConnection mySqlConnection)
         {
-            userRepository = new UserRepository(mySqlConnection);
+            projectAcessRepository = new ProjectAcessRepository(mySqlConnection);
         }
-        public List<User> Handle()
+
+        public List<ProjectAcess> Handle()
         {
             try
             {
-                return userRepository.GetUsers().Result;
+                return projectAcessRepository.GetProjectsAcess().Result;
             }
             catch (Exception ex)
             {
                 throw new Exception("" + ex);
             }
         }
-
     }
 }

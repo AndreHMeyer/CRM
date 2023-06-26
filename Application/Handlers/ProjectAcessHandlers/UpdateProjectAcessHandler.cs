@@ -8,22 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ProjectAcessHandlers
 {
-    public class DeleteProjectAcessHandler
+    public class UpdateProjectAcessHandler
     {
         private IProjectAcessRepository projectAcessRepository;
 
-        public DeleteProjectAcessHandler(MySqlConnection mySqlConnection)
+        public UpdateProjectAcessHandler(MySqlConnection mySqlConnection)
         {
             projectAcessRepository = new ProjectAcessRepository(mySqlConnection);
         }
-
         public ProjectAcess Handle(ProjectAcess projectAcess)
         {
             try
             {
-                return projectAcessRepository.DeleteProjectAcess(projectAcess).Result;
+                return projectAcessRepository.UpdateProjectAcess(projectAcess).Result;
             }
             catch (Exception ex)
             {

@@ -54,6 +54,18 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
+var ApiPolicy = "apiauthpolicy";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: ApiPolicy,
+        policy => {
+            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        }
+    );
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,6 +77,10 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nome do Seu Projeto v1");
     });
 }
+
+app.UseRouting();
+
+app.UseCors(ApiPolicy);
 
 app.UseHttpsRedirection();
 

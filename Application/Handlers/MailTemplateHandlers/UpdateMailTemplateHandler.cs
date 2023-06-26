@@ -8,21 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.MailTemplateHandlers
 {
-    public class CreateMailTemplateHandler
+    public class UpdateMailTemplateHandler
     {
         private IMailTemplateRepository mailTemplateRepository;
 
-        public CreateMailTemplateHandler(MySqlConnection mySqlConnection)
+        public UpdateMailTemplateHandler(MySqlConnection mySqlConnection)
         {
             mailTemplateRepository = new MailTemplateRepository(mySqlConnection);
         }
-        public long Handle(MailTemplate mailTemplate)
+        public MailTemplate Handle(MailTemplate mailTemplate)
         {
             try
             {
-                return mailTemplateRepository.CreateMailTemplates(mailTemplate).Result;
+                return mailTemplateRepository.UpdateMailTemplates(mailTemplate).Result;
             }
             catch (Exception ex)
             {

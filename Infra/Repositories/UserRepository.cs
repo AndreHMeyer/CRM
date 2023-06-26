@@ -1,5 +1,9 @@
-﻿using Dapper;
+﻿using CrmAuth.Domain.Model;
+using Dapper;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
+using Domain.Pagination;
 using Domain.Repositories;
 using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
@@ -22,7 +26,7 @@ namespace Infra.Repositories
             connection = con;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<ResultModel<PaginationResult<User>>> GetUsers(UserFilter filter)
         {
             try
             {
@@ -32,11 +36,25 @@ namespace Infra.Repositories
                 query.Append(" phone as Phone, ");
                 query.Append(" photo as Photo, ");
                 query.Append(" status as Status ");
-                query.Append(" FROM user; ");
+                query.Append(" FROM user ");
+                query.Append(" WHERE 1=1 ");
 
-                var obj = await connection.QueryAsync<User>(query.ToString());
+                DynamicParameters parameters = new();
 
-                return obj.ToList();
+                if (filter.Id.HasValue)
+                {
+                    query.Append(" AND id = @Id ");
+                    parameters.Add("Id", filter.Id);
+                }
+                if (!String.IsNullOrEmpty(filter.Name))
+                {
+                    query.Append(" AND name LIKE %@Name% ");
+                    parameters.Add("Name", filter.Name);
+                }
+
+                var obj = await connection.QueryAsync<User>(query.ToString(),parameters);
+
+                return new PaginationService<User>().ExecutePagination(obj.ToList(), filter);
             }
             catch (Exception ex)
             {

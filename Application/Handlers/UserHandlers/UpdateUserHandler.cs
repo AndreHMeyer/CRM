@@ -8,22 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.UserHandlers
 {
-    public class GetLogHandler
+    public class UpdateUserHandler
     {
-        private ILogRepository logRepository;
+        private IUserRepository userRepository;
 
-        public GetLogHandler(MySqlConnection mySqlConnection)
+        public UpdateUserHandler(MySqlConnection mySqlConnection)
         {
-            logRepository = new LogRepository(mySqlConnection);
+            userRepository = new UserRepository(mySqlConnection);
         }
-
-        public List<Log> Handle()
+        public User Handle(User user)
         {
             try
             {
-                return logRepository.GetLogs().Result;
+                return userRepository.UpdateUser(user).Result;
             }
             catch (Exception ex)
             {
