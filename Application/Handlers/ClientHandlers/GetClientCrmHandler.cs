@@ -8,26 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ClientHandlers
 {
-    public class DeleteClientCrmHandler
+    public class GetClientCrmHandler
     {
-        private IClientCrmRepository clientRepository;
+        private IClientCrmRepository clientCrmRepository;
 
-        public DeleteClientCrmHandler(MySqlConnection mySqlConnection)
+        public GetClientCrmHandler(MySqlConnection mySqlConnection)
         {
-            clientRepository = new ClientCrmRepository(mySqlConnection);
+            clientCrmRepository = new ClientCrmRepository(mySqlConnection);
         }
-        public ClientCrm Handle(ClientCrm client)
+        public List<ClientCrm> Handle()
         {
             try
             {
-                return clientRepository.DeleteClientCrm(client).Result;
+                return clientCrmRepository.GetClientsCrm().Result;
             }
             catch (Exception ex)
             {
                 throw new Exception("" + ex);
             }
         }
+
     }
 }

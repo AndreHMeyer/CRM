@@ -2,29 +2,27 @@
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ClientHandlers
 {
-    public class UpdateClientCrmHandler
+    public class DeleteClientCrmHandler
     {
         private IClientCrmRepository clientRepository;
 
-        public UpdateClientCrmHandler(MySqlConnection mySqlConnection)
+        public DeleteClientCrmHandler(MySqlConnection mySqlConnection)
         {
             clientRepository = new ClientCrmRepository(mySqlConnection);
         }
-
-        public Domain.Entities.ClientCrm Handle(Domain.Entities.ClientCrm client)
+        public ClientCrm Handle(ClientCrm client)
         {
             try
             {
-                return clientRepository.UpdateClientCrm(client).Result;
+                return clientRepository.DeleteClientCrm(client).Result;
             }
             catch (Exception ex)
             {

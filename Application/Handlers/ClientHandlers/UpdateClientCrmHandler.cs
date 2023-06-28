@@ -2,33 +2,34 @@
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ClientHandlers
 {
-    public class GetClientCrmHandler
+    public class UpdateClientCrmHandler
     {
-        private IClientCrmRepository clientCrmRepository;
+        private IClientCrmRepository clientRepository;
 
-        public GetClientCrmHandler(MySqlConnection mySqlConnection)
+        public UpdateClientCrmHandler(MySqlConnection mySqlConnection)
         {
-            clientCrmRepository = new ClientCrmRepository(mySqlConnection);
+            clientRepository = new ClientCrmRepository(mySqlConnection);
         }
-        public List<ClientCrm> Handle()
+
+        public ClientCrm Handle(ClientCrm client)
         {
             try
             {
-                return clientCrmRepository.GetClientsCrm().Result;
+                return clientRepository.UpdateClientCrm(client).Result;
             }
             catch (Exception ex)
             {
                 throw new Exception("" + ex);
             }
         }
-
     }
 }
