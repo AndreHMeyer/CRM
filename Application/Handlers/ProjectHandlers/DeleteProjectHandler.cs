@@ -8,21 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ProjectHandlers
 {
-    public class GetMailTemplateHandler
+    public class DeleteProjectHandler
     {
-        private IMailTemplateRepository mailTemplateRepository;
+        private IProjectRepository projectRepository;
 
-        public GetMailTemplateHandler(MySqlConnection mySqlConnection)
+        public DeleteProjectHandler(MySqlConnection mySqlConnection)
         {
-            mailTemplateRepository = new MailTemplateRepository(mySqlConnection);
+            projectRepository = new ProjectRepository(mySqlConnection);
         }
-        public List<MailTemplate> Handle()
+
+        public Project Handle(Project project)
         {
             try
             {
-                return mailTemplateRepository.GetMailTemplates().Result;
+                return projectRepository.DeleteProject(project).Result;
             }
             catch (Exception ex)
             {

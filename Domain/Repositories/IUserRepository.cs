@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ namespace Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetUsers();
+        Task<ResultModel<PaginationResult<User>>> GetUsers(UserFilter filter);
         Task<long> CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task<User> DeleteUser(User user);

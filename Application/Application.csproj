@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.33" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
@@ -17,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
+    <Folder Include="Handlers\ClientHandlers\" />
   </ItemGroup>
 
 </Project>

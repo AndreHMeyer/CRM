@@ -8,22 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ProjectHandlers
 {
-    public class DeleteProjectHandler
+    public class CreateProjectHandler
     {
         private IProjectRepository projectRepository;
 
-        public DeleteProjectHandler(MySqlConnection mySqlConnection)
+        public CreateProjectHandler(MySqlConnection mySqlConnection)
         {
             projectRepository = new ProjectRepository(mySqlConnection);
         }
 
-        public Project Handle(Project project)
+        public long Handle(Project project)
         {
             try
             {
-                return projectRepository.DeleteProject(project).Result;
+                return projectRepository.CreateProject(project).Result;
             }
             catch (Exception ex)
             {

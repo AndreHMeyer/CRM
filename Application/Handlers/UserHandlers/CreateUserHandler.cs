@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
 using Domain.Model;
 using Domain.Repositories;
 using Infra.Repositories;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.UserHandlers
 {
     public class CreateUserHandler
     {

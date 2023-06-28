@@ -8,22 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.UserHandlers
 {
-    public class GetProjectHandler
+    public class DeleteUserHandler
     {
-        private IProjectRepository projectRepository;
+        private IUserRepository userRepository;
 
-        public GetProjectHandler(MySqlConnection mySqlConnection)
+        public DeleteUserHandler(MySqlConnection mySqlConnection)
         {
-            projectRepository = new ProjectRepository(mySqlConnection);
+            userRepository = new UserRepository(mySqlConnection);
         }
-
-        public List<Project> Handle()
+        public User Handle(User user)
         {
             try
             {
-                return projectRepository.GetProjects().Result;
+                return userRepository.DeleteUser(user).Result;
             }
             catch (Exception ex)
             {

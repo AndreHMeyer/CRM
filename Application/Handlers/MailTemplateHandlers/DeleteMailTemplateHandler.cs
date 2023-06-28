@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.MailTemplateHandlers
 {
     public class DeleteMailTemplateHandler
     {

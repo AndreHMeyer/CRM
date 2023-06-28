@@ -1,4 +1,4 @@
-﻿using Application.NewFolder;
+﻿using Application.Handlers.MailTemplateHandlers;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +27,6 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        //[AllowAnonymous] --> Libera do authorized (Sem autenticação)
         public ActionResult<List<MailTemplate>> GetMailTemplate()
         {
             try

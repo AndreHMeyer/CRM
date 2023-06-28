@@ -1,5 +1,8 @@
-﻿using Application.NewFolder;
+﻿using Application.Handlers.UserHandlers;
+using CrmAuth.Domain.Model;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +12,6 @@ namespace Crm.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UserController : ControllerBase
     {
         private GetUserHandler getUserHandler;
@@ -27,11 +29,12 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetUser()
+        [AllowAnonymous]
+        public ActionResult<ResultModel<PaginationResult<User>>> GetUser([FromQuery]UserFilter filter)
         {
             try
             {
-                var t = getUserHandler.Handle();
+                var t = getUserHandler.Handle(filter);
 
                 return Ok(t);
             }

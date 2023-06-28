@@ -8,21 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.LogHandlers
 {
-    public class DeleteUserHandler
+    public class CreateLogHandler
     {
-        private IUserRepository userRepository;
+        private ILogRepository logRepository;
 
-        public DeleteUserHandler(MySqlConnection mySqlConnection)
+        public CreateLogHandler(MySqlConnection mySqlConnection)
         {
-            userRepository = new UserRepository(mySqlConnection);
+            logRepository = new LogRepository(mySqlConnection);
         }
-        public User Handle(User user)
+
+        public long Handle(Log log)
         {
             try
             {
-                return userRepository.DeleteUser(user).Result;
+                return logRepository.CreateLog(log).Result;
             }
             catch (Exception ex)
             {

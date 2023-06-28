@@ -8,21 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.NewFolder
+namespace Application.Handlers.ProjectHandlers
 {
-    public class UpdateUserHandler
+    public class UpdateProjectHandler
     {
-        private IUserRepository userRepository;
+        private IProjectRepository projectRepository;
 
-        public UpdateUserHandler(MySqlConnection mySqlConnection)
+        public UpdateProjectHandler(MySqlConnection mySqlConnection)
         {
-            userRepository = new UserRepository(mySqlConnection);
+            projectRepository = new ProjectRepository(mySqlConnection);
         }
-        public User Handle(User user)
+        public Project Handle(Project project)
         {
             try
             {
-                return userRepository.UpdateUser(user).Result;
+                return projectRepository.UpdateProject(project).Result;
             }
             catch (Exception ex)
             {
