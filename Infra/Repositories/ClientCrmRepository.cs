@@ -79,9 +79,10 @@ namespace Infra.Repositories
             }
             finally
             {
-                await connection.CloseAsync();
+                connection.Dispose();
             }
         }
+
 
         public async Task<ClientCrm> UpdateClientCrm(ClientCrm client)
         {
