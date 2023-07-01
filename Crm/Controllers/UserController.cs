@@ -12,6 +12,7 @@ namespace Crm.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private GetUserHandler getUserHandler;
@@ -29,7 +30,6 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult<ResultModel<PaginationResult<User>>> GetUser([FromQuery]UserFilter filter)
         {
             try
