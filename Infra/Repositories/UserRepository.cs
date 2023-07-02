@@ -33,6 +33,7 @@ namespace Infra.Repositories
                 StringBuilder query = new();
                 query.Append(" SELECT id as Id, ");
                 query.Append(" name as Name, ");
+                query.Append(" email as Email, ");
                 query.Append(" phone as Phone, ");
                 query.Append(" photo as Photo, ");
                 query.Append(" status as Status ");
@@ -72,13 +73,14 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO user (name, phone, photo, status) ");
-                query.Append(" VALUES (@name, @phone, @photo, @status); ");
+                query.Append(" INSERT INTO user (name, email, phone, photo, status) ");
+                query.Append(" VALUES (@name, @email, @phone, @photo, @status); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
                 parameters.Add("name", user.Name);
+                parameters.Add("email", user.Email);
                 parameters.Add("phone", user.Phone);
                 parameters.Add("photo", user.Photo);
                 parameters.Add("status", user.Status, DbType.Boolean);
@@ -102,13 +104,14 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE user SET name = @name, phone = @phone, photo = @photo, status = @status ");
+                query.Append("  UPDATE user SET name = @name, email = @email,  phone = @phone, photo = @photo, status = @status ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
                 parameters.Add("id", user.Id, DbType.Int64);
                 parameters.Add("name", user.Name);
+                parameters.Add("email", user.Email);
                 parameters.Add("phone", user.Phone);
                 parameters.Add("photo", user.Photo);
                 parameters.Add("status", user.Status, DbType.Boolean);
