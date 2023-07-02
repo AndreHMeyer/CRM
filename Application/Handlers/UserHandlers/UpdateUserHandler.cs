@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -18,15 +19,16 @@ namespace Application.Handlers.UserHandlers
         {
             userRepository = new UserRepository(mySqlConnection);
         }
-        public User Handle(User user)
+        public ResultModel<User> Handle(User user)
         {
             try
             {
-                return userRepository.UpdateUser(user).Result;
+                var result = userRepository.UpdateUser(user).Result;
+                return new Result<User>().CreateSucess(result);
             }
             catch (Exception ex)
             {
-                throw new Exception("" + ex);
+                return new Result<User>().CreateErro(ex.Message);
             }
         }
     }

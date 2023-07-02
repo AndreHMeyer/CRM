@@ -60,7 +60,7 @@ namespace Crm.Controllers
         }
 
         [HttpPut]
-        public ActionResult<long> UpdateUser([FromBody] User user)
+        public ActionResult<ResultModel<User>> UpdateUser([FromBody] User user)
         {
             try
             {
