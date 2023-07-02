@@ -1,5 +1,6 @@
 ﻿using Application.Handlers.ClientHandlers;
 using Domain.Entities;
+using Domain.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,11 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetClientCrm()
+        public ActionResult<List<User>> GetClientCrm([FromQuery] ClientCrmFilter filter)
         {
             try
             {
-                var t = getClientCrmHandler.Handle();
+                var t = getClientCrmHandler.Handle(filter);
 
                 return Ok(t);
             }

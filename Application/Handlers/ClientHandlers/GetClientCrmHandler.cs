@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -18,11 +21,11 @@ namespace Application.Handlers.ClientHandlers
         {
             clientCrmRepository = new ClientCrmRepository(mySqlConnection);
         }
-        public List<ClientCrm> Handle()
+        public ResultModel<PaginationResult<ClientCrm>> Handle(ClientCrmFilter filter)
         {
             try
             {
-                return clientCrmRepository.GetClientsCrm().Result;
+                return clientCrmRepository.GetClientsCrm(filter).Result;
             }
             catch (Exception ex)
             {

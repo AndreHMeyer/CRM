@@ -1,5 +1,9 @@
-﻿using Dapper;
+﻿using CrmAuth.Domain.Model;
+using Dapper;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
+using Domain.Pagination;
 using Domain.Repositories;
 using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
@@ -22,7 +26,7 @@ namespace Infra.Repositories
             connection = con;
         }
 
-        public async Task<List<ClientCrm>> GetClientsCrm()
+        public async Task<ResultModel<PaginationResult<ClientCrm>>> GetClientsCrm(ClientCrmFilter filter)
         {
             try
             {
@@ -35,11 +39,24 @@ namespace Infra.Repositories
                 query.Append(" c.status as Status, ");
                 query.Append(" c.idProject as IdProject ");
                 query.Append(" FROM client c ");
-                query.Append(" JOIN project p On p.id = c.idProject; ");
+                query.Append(" JOIN project p On p.id = c.idProject ");
+                query.Append(" WHERE 1 = 1 ");
 
+                DynamicParameters parameters = new();
+                if(filter.Id.HasValue)
+                {
+                    query.Append(" AND c.id = @Id ");
+                    parameters.Add("Id",filter.Id.Value,DbType.Int64);
+                }
+                if(!String.IsNullOrWhiteSpace(filter.Name))
+                {
+                    query.Append(" AND c.name LIKE %@Name% ");
+                    parameters.Add("Name", filter.Name);
+                }
+                
                 var obj = await connection.QueryAsync<ClientCrm>(query.ToString());
 
-                return obj.ToList();
+                return new PaginationService<ClientCrm>().ExecutePagination(obj.ToList(), filter);
             }
             catch (Exception ex)
             {
