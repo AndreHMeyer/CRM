@@ -69,22 +69,23 @@ namespace Infra.Repositories
 
         }
 
-        public async Task<long> CreateClientCrm(ClientCrm client)
+        public async Task<long> CreateClientCrm(ClientCrm clientCrm)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO client (name, email, phone, document, status) ");
-                query.Append(" VALUES (@name, @email, @phone, @document, @status); ");
+                query.Append(" INSERT INTO client (name, email, phone, document, status, idProject) ");
+                query.Append(" VALUES (@name, @email, @phone, @document, @status, @idProject); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("name", client.Name);
-                parameters.Add("email", client.Email);
-                parameters.Add("phone", client.Phone);
-                parameters.Add("document", client.Document);
-                parameters.Add("status", client.Status, DbType.Boolean);
+                parameters.Add("name", clientCrm.Name);
+                parameters.Add("email", clientCrm.Email);
+                parameters.Add("phone", clientCrm.Phone);
+                parameters.Add("document", clientCrm.Document);
+                parameters.Add("status", clientCrm.Status, DbType.Int64);
+                parameters.Add("idProject", clientCrm.IdProject, DbType.Int64);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
 
@@ -101,25 +102,26 @@ namespace Infra.Repositories
         }
 
 
-        public async Task<ClientCrm> UpdateClientCrm(ClientCrm client)
+        public async Task<ClientCrm> UpdateClientCrm(ClientCrm clientCrm)
         {
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE client SET name = @name, phone = @phone, photo = @photo, status = @status ");
+                query.Append("  UPDATE client SET name = @name, phone = @phone, photo = @photo, status = @status, idProject = @idProject ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("name", client.Name);
-                parameters.Add("email", client.Email);
-                parameters.Add("phone", client.Phone);
-                parameters.Add("document", client.Document);
-                parameters.Add("status", client.Status, DbType.Boolean);
+                parameters.Add("name", clientCrm.Name);
+                parameters.Add("email", clientCrm.Email);
+                parameters.Add("phone", clientCrm.Phone);
+                parameters.Add("document", clientCrm.Document);
+                parameters.Add("status", clientCrm.Status, DbType.Int64);
+                parameters.Add("idProject", clientCrm.IdProject, DbType.Int64);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return client;
+                return clientCrm;
             }
             catch (Exception ex)
             {
@@ -132,7 +134,7 @@ namespace Infra.Repositories
 
         }
 
-        public async Task<ClientCrm> DeleteClientCrm(ClientCrm client)
+        public async Task<ClientCrm> DeleteClientCrm(ClientCrm clientCrm)
         {
             try
             {
@@ -141,12 +143,12 @@ namespace Infra.Repositories
 
                 DynamicParameters parameters = new();
 
-                parameters.Add("id", client.Id, DbType.Int64);
+                parameters.Add("id", clientCrm.Id, DbType.Int64);
 
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
 
-                return client;
+                return clientCrm;
             }
             catch (Exception ex)
             {

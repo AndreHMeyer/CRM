@@ -14,11 +14,11 @@ namespace Application.Handlers.ClientHandlers
 {
     public class CreateClientCrmHandler
     {
-        private IClientCrmRepository clientRepository;
+        private IClientCrmRepository clientCrmRepository;
 
         public CreateClientCrmHandler(MySqlConnection mySqlConnection)
         {
-            clientRepository = new ClientCrmRepository(mySqlConnection);
+            clientCrmRepository = new ClientCrmRepository(mySqlConnection);
         }
         public ResultModel<long> Handle(ClientCrm client)
         {
@@ -26,7 +26,7 @@ namespace Application.Handlers.ClientHandlers
             {
                 ResultModel<long> ResultClient = new();
 
-                ResultClient.Model = clientRepository.CreateClientCrm(client).Result;
+                ResultClient.Model = clientCrmRepository.CreateClientCrm(client).Result;
 
                 ResultClient.Success = true;
 

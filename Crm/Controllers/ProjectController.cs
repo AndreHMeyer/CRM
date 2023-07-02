@@ -1,5 +1,8 @@
 ﻿using Application.Handlers.ProjectHandlers;
+using CrmAuth.Domain.Model;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -26,11 +29,11 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetProject()
+        public ActionResult<ResultModel<PaginationResult<Project>>> GetProject([FromQuery] ProjectFilter filter)
         {
             try
             {
-                var t = getProjectHandler.Handle();
+                var t = getProjectHandler.Handle(filter);
 
                 return Ok(t);
             }

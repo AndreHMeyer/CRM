@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -19,11 +22,11 @@ namespace Application.Handlers.ProjectHandlers
             projectRepository = new ProjectRepository(mySqlConnection);
         }
 
-        public List<Project> Handle()
+        public ResultModel<PaginationResult<Project>> Handle(ProjectFilter filter)
         {
             try
             {
-                return projectRepository.GetProjects().Result;
+                return projectRepository.GetProjects(filter).Result;
             }
             catch (Exception ex)
             {

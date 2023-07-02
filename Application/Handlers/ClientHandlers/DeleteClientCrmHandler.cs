@@ -12,17 +12,17 @@ namespace Application.Handlers.ClientHandlers
 {
     public class DeleteClientCrmHandler
     {
-        private IClientCrmRepository clientRepository;
+        private IClientCrmRepository clientCrmRepository;
 
         public DeleteClientCrmHandler(MySqlConnection mySqlConnection)
         {
-            clientRepository = new ClientCrmRepository(mySqlConnection);
+            clientCrmRepository = new ClientCrmRepository(mySqlConnection);
         }
         public ClientCrm Handle(ClientCrm client)
         {
             try
             {
-                return clientRepository.DeleteClientCrm(client).Result;
+                return clientCrmRepository.DeleteClientCrm(client).Result;
             }
             catch (Exception ex)
             {

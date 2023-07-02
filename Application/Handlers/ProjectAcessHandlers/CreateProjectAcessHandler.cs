@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -19,15 +20,16 @@ namespace Application.Handlers.ProjectAcessHandlers
             projectAcessRepository = new ProjectAcessRepository(mySqlConnection);
         }
 
-        public long Handle(ProjectAcess projectAcess)
+        public ResultModel<long> Handle(ProjectAcess projectAcess)
         {
             try
             {
-                return projectAcessRepository.CreateProjectAcess(projectAcess).Result;
+                var result = projectAcessRepository.CreateProjectAcess(projectAcess).Result;
+                return new Result<long>().CreateSucess(result);
             }
             catch (Exception ex)
             {
-                throw new Exception("" + ex);
+                return new Result<long>().CreateErro(ex.Message);
             }
         }
     }

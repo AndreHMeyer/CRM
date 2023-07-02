@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ namespace Domain.Repositories
 {
     public interface IProjectRepository
     {
-        Task<List<Project>> GetProjects();
+        Task<ResultModel<PaginationResult<Project>>> GetProjects(ProjectFilter filter);
         Task<long> CreateProject(Project project);
         Task<Project> UpdateProject(Project project);
         Task<Project> DeleteProject(Project project);

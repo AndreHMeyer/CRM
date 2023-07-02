@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -19,15 +20,16 @@ namespace Application.Handlers.LogHandlers
             logRepository = new LogRepository(mySqlConnection);
         }
 
-        public long Handle(Log log)
+        public ResultModel<long> Handle(Log log)
         {
             try
             {
-                return logRepository.CreateLog(log).Result;
+                var result = logRepository.CreateLog(log).Result;
+                return new Result<long>().CreateSucess(result);
             }
             catch (Exception ex)
             {
-                throw new Exception("" + ex);
+                return new Result<long>().CreateErro(ex.Message);
             }
         }
     }

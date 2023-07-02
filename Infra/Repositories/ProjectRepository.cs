@@ -1,5 +1,9 @@
-﻿using Dapper;
+﻿using CrmAuth.Domain.Model;
+using Dapper;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
+using Domain.Pagination;
 using Domain.Repositories;
 using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
@@ -22,7 +26,7 @@ namespace Infra.Repositories
             connection = con;
         }
 
-        public async Task<List<Project>> GetProjects()
+        public async Task<ResultModel<PaginationResult<Project>>> GetProjects(ProjectFilter filter)
         {
             try
             {
@@ -37,9 +41,22 @@ namespace Infra.Repositories
                 query.Append(" FROM project p ");
                 query.Append(" JOIN user u ON u.id = p.idUserOwner; ");
 
+                DynamicParameters parameters = new();
+
+                if (filter.Id.HasValue)
+                {
+                    query.Append(" AND id = @Id ");
+                    parameters.Add("Id", filter.Id);
+                }
+                if (!String.IsNullOrEmpty(filter.Name))
+                {
+                    query.Append(" AND name LIKE %@Name% ");
+                    parameters.Add("Name", filter.Name);
+                }
+
                 var obj = await connection.QueryAsync<Project>(query.ToString());
 
-                return obj.ToList();
+                return new PaginationService<Project>().ExecutePagination(obj.ToList(), filter);
             }
             catch (Exception ex)
             {

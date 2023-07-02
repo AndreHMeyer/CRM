@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -13,22 +14,23 @@ namespace Application.Handlers.ClientHandlers
 {
     public class UpdateClientCrmHandler
     {
-        private IClientCrmRepository clientRepository;
+        private IClientCrmRepository clientCrmRepository;
 
         public UpdateClientCrmHandler(MySqlConnection mySqlConnection)
         {
-            clientRepository = new ClientCrmRepository(mySqlConnection);
+            clientCrmRepository = new ClientCrmRepository(mySqlConnection);
         }
 
-        public ClientCrm Handle(ClientCrm client)
+        public ResultModel<ClientCrm> Handle(ClientCrm clientCrm)
         {
             try
             {
-                return clientRepository.UpdateClientCrm(client).Result;
+                var result = clientCrmRepository.UpdateClientCrm(clientCrm).Result;
+                return new Result<ClientCrm>().CreateSucess(result);
             }
             catch (Exception ex)
             {
-                throw new Exception("" + ex);
+                return new Result<ClientCrm>().CreateErro(ex.Message);
             }
         }
     }
