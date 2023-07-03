@@ -13,7 +13,7 @@ namespace Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string Photo { get; set; }
-        public int CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         public bool Status { get; set; }
         public int IdUserOwner { get; set; }
     }

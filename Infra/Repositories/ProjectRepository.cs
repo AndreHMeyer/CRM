@@ -79,8 +79,8 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO project (name, description, photo, createdAt, status) ");
-                query.Append(" VALUES (@name, @description, @photo, @createdAt, @status); ");
+                query.Append(" INSERT INTO project (name, description, photo, createdAt, status, idUserOwner) ");
+                query.Append(" VALUES (@name, @description, @photo, @createdAt, @status, @idUserOwner); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
@@ -88,8 +88,9 @@ namespace Infra.Repositories
                 parameters.Add("name", project.Name);
                 parameters.Add("description", project.Description);
                 parameters.Add("photo", project.Photo);
-                parameters.Add("createdAt", project.CreatedAt, DbType.Int64);
+                parameters.Add("createdAt", project.CreatedAt, DbType.Date);
                 parameters.Add("status", project.Status, DbType.Boolean);
+                parameters.Add("idUserOwner", project.IdUserOwner);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
 
