@@ -40,7 +40,7 @@ namespace Infra.Repositories
                 query.Append(" c.idProject as IdProject ");
                 query.Append(" FROM client c ");
                 query.Append(" JOIN project p On p.id = c.idProject ");
-                query.Append(" WHERE 1 = 1 ");
+                query.Append(" WHERE 2=2 ");
 
                 DynamicParameters parameters = new();
                 if(filter.Id.HasValue)
@@ -67,13 +67,14 @@ namespace Infra.Repositories
                     parameters.Add("Status", filter.Status.Value, DbType.Int64);
                 }
 
-
+                var teste = connection.Query<ClientCrm>(query.ToString(),parameters);
                 var obj = await connection.QueryAsync<ClientCrm>(query.ToString(), parameters);
 
                 return new PaginationService<ClientCrm>().ExecutePagination(obj.ToList(), filter);
             }
             catch (Exception ex)
             {
+                var a = ex.Message;
                 throw new Exception("Erro no banco: " + ex);
             }
             finally
@@ -98,7 +99,7 @@ namespace Infra.Repositories
                 parameters.Add("email", clientCrm.Email);
                 parameters.Add("phone", clientCrm.Phone);
                 parameters.Add("document", clientCrm.Document);
-                parameters.Add("status", clientCrm.Status, DbType.Int64);
+                parameters.Add("status", clientCrm.Status, DbType.Int16);
                 parameters.Add("idProject", clientCrm.IdProject, DbType.Int64);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
