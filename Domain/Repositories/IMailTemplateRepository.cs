@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ namespace Domain.Repositories
 {
     public interface IMailTemplateRepository
     {
-        Task<List<MailTemplate>> GetMailTemplates();
+        Task<ResultModel<PaginationResult<MailTemplate>>> GetMailTemplates(MailTemplateFilter filter);
         Task<long> CreateMailTemplates(MailTemplate mailTemplate);
         Task<MailTemplate> UpdateMailTemplates(MailTemplate mailTemplate);
         Task<MailTemplate> DeleteMailTemplates(MailTemplate mailTemplate);

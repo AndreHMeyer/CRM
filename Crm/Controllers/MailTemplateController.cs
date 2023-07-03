@@ -1,5 +1,9 @@
-﻿using Application.Handlers.MailTemplateHandlers;
+﻿using Application.Handlers.ClientHandlers;
+using Application.Handlers.MailTemplateHandlers;
+using CrmAuth.Domain.Model;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +31,11 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<MailTemplate>> GetMailTemplate()
+        public ActionResult<ResultModel<PaginationResult<MailTemplate>>> GetMailTemplates([FromQuery] MailTemplateFilter filter)
         {
             try
             {
-                var t = getMailTemplateHandler.Handle();
+                var t = getMailTemplateHandler.Handle(filter);
 
                 return Ok(t);
             }
@@ -42,7 +46,7 @@ namespace Crm.Controllers
         }
 
         [HttpPost]
-        public ActionResult<long> CreateMailTemplate([FromBody] MailTemplate mailTemplate)
+        public ActionResult<ResultModel<long>> CreateMailTemplate([FromBody] MailTemplate mailTemplate)
         {
             try
             {
@@ -57,7 +61,7 @@ namespace Crm.Controllers
         }
 
         [HttpPut]
-        public ActionResult<long> UpdateMailTemplate([FromBody] MailTemplate mailTemplate)
+        public ActionResult<ResultModel<MailTemplate>> UpdateMailTemplate([FromBody] MailTemplate mailTemplate)
         {
             try
             {
@@ -72,7 +76,7 @@ namespace Crm.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<long> DeleteMailTemplate([FromBody] MailTemplate mailTemplate)
+        public ActionResult<ResultModel<MailTemplate>> DeleteMailTemplate([FromBody] MailTemplate mailTemplate)
         {
             try
             {
