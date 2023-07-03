@@ -13,7 +13,7 @@ namespace Domain.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Document { get; set; }
-        public short Status { get; set; }
+        public bool Status { get; set; }
         public int IdProject { get; set; }
     }
 }

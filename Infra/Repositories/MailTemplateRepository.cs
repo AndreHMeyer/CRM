@@ -34,21 +34,22 @@ namespace Infra.Repositories
                 query.Append(" title as Title, ");
                 query.Append(" data as Data, ");
                 query.Append(" status as Status ");
-                query.Append(" FROM mailTemplate; ");
+                query.Append(" FROM mailTemplate ");
+                query.Append(" WHERE 1 = 1 ");
 
                 DynamicParameters parameters = new();
                 if (filter.Id.HasValue)
                 {
-                    query.Append(" AND c.id = @Id ");
+                    query.Append(" AND id = @Id ");
                     parameters.Add("Id", filter.Id.Value, DbType.Int64);
                 }
                 if (!String.IsNullOrWhiteSpace(filter.Title))
                 {
-                    query.Append($" AND c.title LIKE \'%{filter.Title}%\' ");
+                    query.Append($" AND title LIKE \'%{filter.Title}%\' ");
                 }
                 if (filter.Status.HasValue)
                 {
-                    query.Append(" AND c.status = @Status ");
+                    query.Append(" AND status = @Status ");
                     parameters.Add("Status", filter.Status.Value, DbType.Int64);
                 }
 

@@ -99,7 +99,7 @@ namespace Infra.Repositories
                 parameters.Add("email", clientCrm.Email);
                 parameters.Add("phone", clientCrm.Phone);
                 parameters.Add("document", clientCrm.Document);
-                parameters.Add("status", clientCrm.Status, DbType.Int16);
+                parameters.Add("status", clientCrm.Status, DbType.Boolean);
                 parameters.Add("idProject", clientCrm.IdProject, DbType.Int64);
 
                 var obj = await connection.QueryAsync<long>(query.ToString(), parameters);
@@ -131,7 +131,7 @@ namespace Infra.Repositories
                 parameters.Add("email", clientCrm.Email);
                 parameters.Add("phone", clientCrm.Phone);
                 parameters.Add("document", clientCrm.Document);
-                parameters.Add("status", clientCrm.Status, DbType.Int64);
+                parameters.Add("status", clientCrm.Status, DbType.Boolean);
                 parameters.Add("idProject", clientCrm.IdProject, DbType.Int64);
 
                 await connection.ExecuteAsync(query.ToString(), parameters);
