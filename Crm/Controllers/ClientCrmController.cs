@@ -59,6 +59,20 @@ namespace Crm.Controllers
             }
         }
 
+        [HttpPost("CrmProvider/{IdForm}")]
+        [AllowAnonymous]
+        public ActionResult<Result<long>> CreateClientCrmFromProvider([FromBody] ClientCrm client)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpPut]
         public ActionResult<ResultModel<ClientCrm>> UpdateClientCrm([FromBody] ClientCrm client)
         {

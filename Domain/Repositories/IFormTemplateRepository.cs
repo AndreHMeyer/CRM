@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +12,8 @@ namespace Domain.Repositories
 {
     public interface IFormTemplateRepository
     {
-        Task<List<FormTemplate>> GetFormTemplates();
-        Task<long> CreateFormTemplate(FormTemplate formTemplate);
-        Task<FormTemplate> UpdateFormTemplate(FormTemplate formTemplate);
-        Task<FormTemplate> DeleteFormTemplate(FormTemplate formTemplate);
+        Task<ResultModel<PaginationResult<FormTemplate>>> Get(FormFilter filter);
+        Task<long> Create(FormTemplate template);
+        Task<long> Delete(long Id);
     }
 }
