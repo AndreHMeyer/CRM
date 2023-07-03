@@ -14,10 +14,12 @@ namespace Application.Handlers.ProjectHandlers
     public class CreateProjectHandler
     {
         private IProjectRepository projectRepository;
+        private IMailMarketingListRepository mailMarketingListRepository;
 
         public CreateProjectHandler(MySqlConnection mySqlConnection)
         {
             projectRepository = new ProjectRepository(mySqlConnection);
+            mailMarketingListRepository = new MailMarketingListRepository(mySqlConnection);
         }
 
         public ResultModel<long> Handle(Project project)
@@ -25,6 +27,18 @@ namespace Application.Handlers.ProjectHandlers
             try
             {
                 var result = projectRepository.CreateProject(project).Result;
+
+                if(result != 0)
+                {
+                    var mr = mailMarketingListRepository.CreateMailMarketingList(new()
+                    {
+                        ListName = $"Default List {result}",
+                        Status = true,
+                        IdProject = (int)result,
+                        IdMail = 1
+                    }).Result;
+                }
+
                 return new Result<long>().CreateSucess(result);
             }
             catch (Exception ex)

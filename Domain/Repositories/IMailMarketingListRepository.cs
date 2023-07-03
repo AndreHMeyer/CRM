@@ -9,9 +9,7 @@ namespace Domain.Repositories
 {
     public interface IMailMarketingListRepository
     {
-        Task<List<MailMarketingList>> GetMailMarketingLists();
-        Task<long> CreateMailMarketingList(MailMarketingList mailMarketingList);
-        Task<MailMarketingList> UpdateMailMarketingList(MailMarketingList mailMarketingList);
-        Task<MailMarketingList> DeleteMailMarketingList(MailMarketingList mailMarketingList);
+        Task<MailMarketingList> GetMailMarketingListByIdProject(long IdProject);
+        Task<long> CreateMailMarketingList(MailMarketingList mail);
     }
 }
