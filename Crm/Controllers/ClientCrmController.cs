@@ -1,6 +1,8 @@
 ﻿using Application.Handlers.ClientHandlers;
+using CrmAuth.Domain.Model;
 using Domain.Entities;
 using Domain.Filters;
+using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +30,7 @@ namespace Crm.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetClientCrm([FromQuery] ClientCrmFilter filter)
+        public ActionResult<ResultModel<PaginationResult<User>>> GetClientCrm([FromQuery] ClientCrmFilter filter)
         {
             try
             {
@@ -43,7 +45,7 @@ namespace Crm.Controllers
         }
 
         [HttpPost]
-        public ActionResult<long> CreateClientCrm([FromBody] ClientCrm client)
+        public ActionResult<ResultModel<long>> CreateClientCrm([FromBody] ClientCrm client)
         {
             try
             {
@@ -58,7 +60,7 @@ namespace Crm.Controllers
         }
 
         [HttpPut]
-        public ActionResult<long> UpdateClientCrm([FromBody] ClientCrm client)
+        public ActionResult<ResultModel<ClientCrm>> UpdateClientCrm([FromBody] ClientCrm client)
         {
             try
             {
@@ -73,7 +75,7 @@ namespace Crm.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<long> DeleteClientCrm([FromBody] ClientCrm client)
+        public ActionResult<ResultModel<ClientCrm>> DeleteClientCrm([FromBody] ClientCrm client)
         {
             try
             {

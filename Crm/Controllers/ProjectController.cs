@@ -44,7 +44,7 @@ namespace Crm.Controllers
         }
 
         [HttpPost]
-        public ActionResult<long> CreateProject([FromBody] Project project)
+        public ActionResult<ResultModel<long>> CreateProject([FromBody] Project project)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Crm.Controllers
         }
 
         [HttpPut]
-        public ActionResult<long> UpdateProject([FromBody] Project project)
+        public ActionResult<ResultModel<long>> UpdateProject([FromBody] Project project)
         {
             try
             {

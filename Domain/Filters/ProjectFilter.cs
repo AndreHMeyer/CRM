@@ -10,6 +10,7 @@ namespace Domain.Filters
     public class ProjectFilter : PaginationBase
     {
         public int? Id { get; set; }
+        public int? idUserOwner { get; set; }
         public string? Name { get; set; }
     }
 }

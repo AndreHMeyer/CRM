@@ -39,22 +39,28 @@ namespace Infra.Repositories
                 query.Append(" p.status as Status, ");
                 query.Append(" p.idUserOwner as IdUserOwner ");
                 query.Append(" FROM project p ");
-                query.Append(" JOIN user u ON u.id = p.idUserOwner; ");
+                query.Append(" JOIN user u ON u.id = p.idUserOwner ");
+                query.Append(" WHERE 1=1 ");
 
                 DynamicParameters parameters = new();
 
                 if (filter.Id.HasValue)
                 {
-                    query.Append(" AND id = @Id ");
-                    parameters.Add("Id", filter.Id);
+                    query.Append(" AND p.id = @Id ");
+                    parameters.Add("Id", filter.Id.Value, DbType.Int64);
+                }
+                if (filter.idUserOwner.HasValue)
+                {
+                    query.Append(" AND p.idUserOwner = @IdUserOwner ");
+                    parameters.Add("IdUserOwner", filter.idUserOwner.Value, DbType.Int64);
                 }
                 if (!String.IsNullOrEmpty(filter.Name))
                 {
-                    query.Append(" AND name LIKE %@Name% ");
+                    query.Append(" AND p.name LIKE %@Name% ");
                     parameters.Add("Name", filter.Name);
                 }
 
-                var obj = await connection.QueryAsync<Project>(query.ToString());
+                var obj = await connection.QueryAsync<Project>(query.ToString(),parameters);
 
                 return new PaginationService<Project>().ExecutePagination(obj.ToList(), filter);
             }
