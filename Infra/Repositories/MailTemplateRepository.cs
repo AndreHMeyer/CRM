@@ -1,13 +1,18 @@
-﻿using Dapper;
+﻿using CrmAuth.Domain.Model;
+using Dapper;
 using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
+using Domain.Pagination;
 using Domain.Repositories;
+using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Utilities.Collections;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Infra.Repositories
 {
@@ -20,19 +25,37 @@ namespace Infra.Repositories
             connection = con;
         }
 
-        public async Task<List<MailTemplate>> GetMailTemplates()
+        public async Task<ResultModel<PaginationResult<MailTemplate>>> GetMailTemplates(MailTemplateFilter filter)
         {
             try
             {
                 StringBuilder query = new();
                 query.Append(" SELECT id as Id, ");
+                query.Append(" title as Title, ");
                 query.Append(" data as Data, ");
                 query.Append(" status as Status ");
-                query.Append(" FROM mailTemplate; ");
+                query.Append(" FROM mailTemplate ");
+                query.Append(" WHERE 1 = 1 ");
 
-                var obj = await connection.QueryAsync<MailTemplate>(query.ToString());
+                DynamicParameters parameters = new();
+                if (filter.Id.HasValue)
+                {
+                    query.Append(" AND id = @Id ");
+                    parameters.Add("Id", filter.Id.Value, DbType.Int64);
+                }
+                if (!String.IsNullOrWhiteSpace(filter.Title))
+                {
+                    query.Append($" AND title LIKE \'%{filter.Title}%\' ");
+                }
+                if (filter.Status.HasValue)
+                {
+                    query.Append(" AND status = @Status ");
+                    parameters.Add("Status", filter.Status.Value, DbType.Int64);
+                }
 
-                return obj.ToList();
+                var obj = await connection.QueryAsync<MailTemplate>(query.ToString(), parameters);
+
+                return new PaginationService<MailTemplate>().ExecutePagination(obj.ToList(), filter);
             }
             catch (Exception ex)
             {
@@ -50,12 +73,13 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append(" INSERT INTO mailTemplate (data, status) ");
-                query.Append(" VALUES (@data, @status); ");
+                query.Append(" INSERT INTO mailTemplate (title, data, status) ");
+                query.Append(" VALUES (@title, @data, @status); ");
                 query.Append(" SELECT LAST_INSERT_ID(); ");
 
                 DynamicParameters parameters = new();
 
+                parameters.Add("title", mailTemplate.Title);
                 parameters.Add("data", mailTemplate.Data);
                 parameters.Add("status", mailTemplate.Status, DbType.Boolean);
 
@@ -78,12 +102,13 @@ namespace Infra.Repositories
             try
             {
                 StringBuilder query = new();
-                query.Append("  UPDATE mailTemplate SET data = @data, status = @status ");
+                query.Append("  UPDATE mailTemplate SET title = @title, data = @data, status = @status ");
                 query.Append(" WHERE id = @id; ");
 
                 DynamicParameters parameters = new();
 
                 parameters.Add("id", mailTemplate.Id, DbType.Int64);
+                parameters.Add("title", mailTemplate.Title);
                 parameters.Add("data", mailTemplate.Data);
                 parameters.Add("status", mailTemplate.Status, DbType.Boolean);
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -18,15 +19,16 @@ namespace Application.Handlers.MailTemplateHandlers
         {
             mailTemplateRepository = new MailTemplateRepository(mySqlConnection);
         }
-        public MailTemplate Handle(MailTemplate mailTemplate)
+        public ResultModel<MailTemplate> Handle(MailTemplate mailTemplate)
         {
             try
             {
-                return mailTemplateRepository.DeleteMailTemplates(mailTemplate).Result;
+                var result = mailTemplateRepository.DeleteMailTemplates(mailTemplate).Result;
+                return new Result<MailTemplate>().CreateSucess(result);
             }
             catch (Exception ex)
             {
-                throw new Exception("" + ex);
+                return new Result<MailTemplate>().CreateErro(ex.Message);
             }
         }
     }

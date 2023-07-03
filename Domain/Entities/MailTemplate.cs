@@ -9,6 +9,7 @@ namespace Domain.Entities
     public class MailTemplate
     {
         public int Id { get; set; }
+        public string Title { get; set; }
         public string Data { get; set; }
         public bool Status { get; set; }
     }

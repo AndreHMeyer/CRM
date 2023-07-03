@@ -1,4 +1,7 @@
-﻿using Domain.Entities;
+﻿using CrmAuth.Domain.Model;
+using Domain.Entities;
+using Domain.Filters;
+using Domain.Model;
 using Domain.Repositories;
 using Infra.Repositories;
 using MySql.Data.MySqlClient;
@@ -18,11 +21,11 @@ namespace Application.Handlers.MailTemplateHandlers
         {
             mailTemplateRepository = new MailTemplateRepository(mySqlConnection);
         }
-        public List<MailTemplate> Handle()
+        public ResultModel<PaginationResult<MailTemplate>> Handle(MailTemplateFilter filter)
         {
             try
             {
-                return mailTemplateRepository.GetMailTemplates().Result;
+                return mailTemplateRepository.GetMailTemplates(filter).Result;
             }
             catch (Exception ex)
             {
