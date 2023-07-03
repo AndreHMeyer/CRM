@@ -19,6 +19,39 @@ namespace Infra.Repositories
             connection = con;
         }
 
+        public async Task<MailMarketingList> GetMailMarketingListByIdForm(long IdForm)
+        {
+            try
+            {
+                StringBuilder query = new();
+
+                query.Append(" SELECT ");
+                query.Append(" m.id as Id, ");
+                query.Append(" m.listName as ListName, ");
+                query.Append(" m.status as Status, ");
+                query.Append(" m.idProject as IdProject, ");
+                query.Append(" m.idMail as IdMail ");
+                query.Append(" FROM mailmarketinglist m ");
+                query.Append(" JOIN formtemplate f ON f.idMailMarketingList = m.id ");
+                query.Append(" WHERE f.id = @Id ");
+
+                DynamicParameters parameters = new();
+
+                parameters.Add("Id", IdForm, System.Data.DbType.Int64);
+
+                var obj = await connection.QueryAsync<MailMarketingList>(query.ToString(), parameters);
+                return obj.First();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro no banco" + ex.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
         public async Task<MailMarketingList> GetMailMarketingListByIdProject(long IdProject)
         {
             try

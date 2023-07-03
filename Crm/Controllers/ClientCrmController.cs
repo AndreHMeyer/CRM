@@ -19,6 +19,7 @@ namespace Crm.Controllers
         private CreateClientCrmHandler createClientCrmHandler;
         private UpdateClientCrmHandler updateClientCrmHandler;
         private DeleteClientCrmHandler deleteClientCrmHandler;
+        private ClientProviderHandler clientProviderHandler;
 
         public ClientCrmController(IConfiguration config)
         {
@@ -27,6 +28,7 @@ namespace Crm.Controllers
             createClientCrmHandler = new CreateClientCrmHandler(connection);
             updateClientCrmHandler = new UpdateClientCrmHandler(connection);
             deleteClientCrmHandler = new DeleteClientCrmHandler(connection);
+            clientProviderHandler = new ClientProviderHandler(connection);
         }
 
         [HttpGet]
@@ -61,11 +63,12 @@ namespace Crm.Controllers
 
         [HttpPost("CrmProvider/{IdForm}")]
         [AllowAnonymous]
-        public ActionResult<Result<long>> CreateClientCrmFromProvider([FromBody] ClientCrm client)
+        public ActionResult<Result<long>> CreateClientCrmFromProvider([FromRoute] long IdForm, [FromBody] ClientCrm client)
         {
             try
             {
-                return Ok();
+                var r = clientProviderHandler.Handle(IdForm, client);
+                return Ok(r);
             }
             catch (Exception ex)
             {

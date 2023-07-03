@@ -23,6 +23,38 @@ namespace Infra.Repositories
             connection = con;
         }
 
+        public async Task<ResultModel<PaginationResult<FormTemplate>>> GetById(FormFilter filter)
+        {
+            try
+            {
+                StringBuilder query = new();
+
+                query.Append(" SELECT ");
+                query.Append(" f.id as Id, ");
+                query.Append(" f.data as Data, ");
+                query.Append(" f.status as Status, ");
+                query.Append(" f.idMailMarketingList as IdMailMarketingList ");
+                query.Append(" FROM formtemplate AS f ");
+                query.Append(" WHERE f.id = @Id ");
+
+                DynamicParameters parameters = new();
+
+                parameters.Add("Id", filter.Id, System.Data.DbType.Int64);
+
+                var obj = await connection.QueryAsync<FormTemplate>(query.ToString(), parameters);
+                return new PaginationService<FormTemplate>().ExecutePagination(obj.ToList(), filter);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro no banco: " + ex.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
         public async Task<ResultModel<PaginationResult<FormTemplate>>> Get(FormFilter filter)
         {
             try

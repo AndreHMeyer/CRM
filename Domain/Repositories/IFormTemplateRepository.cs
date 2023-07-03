@@ -13,6 +13,7 @@ namespace Domain.Repositories
     public interface IFormTemplateRepository
     {
         Task<ResultModel<PaginationResult<FormTemplate>>> Get(FormFilter filter);
+        Task<ResultModel<PaginationResult<FormTemplate>>> GetById(FormFilter filter);
         Task<long> Create(FormTemplate template);
         Task<long> Delete(long Id);
     }

@@ -9,6 +9,7 @@ namespace Domain.Filters
 {
     public class FormFilter : PaginationBase
     {
+        public long Id { get; set; }
         public long IdProject { get; set; }
     }
 }
