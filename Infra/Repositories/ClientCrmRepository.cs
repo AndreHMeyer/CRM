@@ -50,11 +50,25 @@ namespace Infra.Repositories
                 }
                 if(!String.IsNullOrWhiteSpace(filter.Name))
                 {
-                    query.Append(" AND c.name LIKE %@Name% ");
-                    parameters.Add("Name", filter.Name);
+                    query.Append($" AND c.name LIKE \'%{filter.Name}%\' ");
                 }
-                
-                var obj = await connection.QueryAsync<ClientCrm>(query.ToString());
+                if (filter.IdProject.HasValue)
+                {
+                    query.Append(" AND c.idProject = @IdProject ");
+                    parameters.Add("IdProject", filter.IdProject.Value, DbType.Int64);
+                }
+                if (!String.IsNullOrWhiteSpace(filter.Email))
+                {
+                    query.Append($" AND c.email LIKE \'%{filter.Email}%\' ");
+                }
+                if (filter.Status.HasValue)
+                {
+                    query.Append(" AND c.status = @Status ");
+                    parameters.Add("Status", filter.Status.Value, DbType.Int64);
+                }
+
+
+                var obj = await connection.QueryAsync<ClientCrm>(query.ToString(), parameters);
 
                 return new PaginationService<ClientCrm>().ExecutePagination(obj.ToList(), filter);
             }
